@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { data2 } from "./members";
 
 const Members = () => {
   const [members, setMembers] = useState([]);
   const [visibleCount, setVisibleCount] = useState(8);
 
   useEffect(() => {
-    fetch("/src/components/Members/members.json")
-      .then((res) => res.json())
-      .then((data) => setMembers(data));
+    // fetch("/src/components/Members/members.json")
+    //   .then((res) => res.json())
+    //   .then((data) => setMembers(data));
+    setMembers(data2);
   }, []);
 
   return (
@@ -45,7 +47,7 @@ const Members = () => {
             </div>
           ))}
         </div>
-        
+
         {visibleCount < members.length && (
           <div className="flex justify-center mt-12">
             <button

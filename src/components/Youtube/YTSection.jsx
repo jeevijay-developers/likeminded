@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { data } from "./ytVideos";
 
 const YTSection = () => {
   const [videos, setVideos] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
 
   useEffect(() => {
-    fetch("/src/components/Youtube/ytVideos.json")
-      .then((res) => res.json())
-      .then((data) => setVideos(data));
+    // fetch("/src/components/Youtube/ytVideos.json")
+    //   .then((res) => res.json())
+    //   .then((data) => setVideos(data));
+
+    setVideos(data);
   }, []);
 
   return (
@@ -15,7 +18,7 @@ const YTSection = () => {
       <div className="container mx-auto px-6 sm:px-8">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
-            Our <span className="text-amber-700">Stage Performances</span> 
+            Our <span className="text-amber-700">Stage Performances</span>
           </h2>
           <div className="w-24 h-1 bg-amber-700 mx-auto"></div>
         </div>
