@@ -4,14 +4,29 @@ import { data } from "./ytVideos";
 const YTSection = () => {
   const [videos, setVideos] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // fetch("/src/components/Youtube/ytVideos.json")
-    //   .then((res) => res.json())
-    //   .then((data) => setVideos(data));
-
     setVideos(data);
   }, []);
+
+  const openModal = (video) => {
+    setSelectedVideo(video);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedVideo(null);
+  };
+
+  const getYouTubeEmbedUrl = (url) => {
+    // Extract video ID from various YouTube URL formats
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[7].length === 11) ? `https://www.youtube.com/embed/${match[7]}` : url;
+  };
 
   return (
     <section className="bg-white py-16 md:py-24">
@@ -27,7 +42,7 @@ const YTSection = () => {
             <div
               key={video.id}
               className="bg-amber-50 rounded-lg shadow-md overflow-hidden cursor-pointer transition hover:shadow-lg"
-              onClick={() => window.open(video.youtubeUrl, "_blank")}
+              onClick={() => openModal(video)}
             >
               <img
                 src={video.thumbnail}
@@ -43,6 +58,7 @@ const YTSection = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-amber-700 hover:underline text-sm"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   Watch on YouTube
                 </a>
@@ -58,6 +74,52 @@ const YTSection = () => {
             >
               View More
             </button>
+          </div>
+        )}
+
+        {/* Modal */}
+        {isModalOpen && selectedVideo && (
+          <div className="fixed inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden relative">
+              {/* Close button */}
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl z-10 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md"
+              >
+                ×
+              </button>
+              
+              {/* Modal content */}
+              <div className="p-6">
+                <h3 className="text-xl font-serif font-semibold text-gray-900 mb-4">
+                  {selectedVideo.title}
+                </h3>
+                
+                {/* YouTube iframe */}
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                  <iframe
+                    src={getYouTubeEmbedUrl(selectedVideo.youtubeUrl)}
+                    title={selectedVideo.title}
+                    className="absolute inset-0 w-full h-full rounded-lg"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                
+                {/* External link */}
+                <div className="mt-4 text-center">
+                  <a
+                    href={selectedVideo.youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-700 hover:underline text-sm"
+                  >
+                    Open on YouTube
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

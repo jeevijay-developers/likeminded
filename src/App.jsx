@@ -2,10 +2,10 @@ import Navbar from "./components/Navbar"
 import HeroSection from "./components/HeroSection"
 import AboutSection from "./components/AboutSection"
 import YTSection from "./components/Youtube/YTSection"
-import Members from "./components/Members/Members"
 import Footer from "./components/Footer"
 import './App.css';
 import { useEffect } from "react";
+import Members from "./components/Members/Members"
 
 function App() {
   // Implement smooth scrolling

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { data2 } from "./members";
+import { data2 } from "./members.data.js"; 
 
 const Members = () => {
   const [members, setMembers] = useState([]);
   const [visibleCount, setVisibleCount] = useState(8);
 
   useEffect(() => {
-    // fetch("/src/components/Members/members.json")
-    //   .then((res) => res.json())
-    //   .then((data) => setMembers(data));
     setMembers(data2);
   }, []);
 
